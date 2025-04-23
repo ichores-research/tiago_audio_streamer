@@ -11,6 +11,8 @@ You should build it using:
 
 ```bash
 
+cd /home/pal/test_ws
+
 catkin build tiago_audio_streamer
 
 ```
@@ -29,7 +31,9 @@ You need to check whether or not any audio is getting streamed.
 In the computer connected to the robot, use the following command:
 
 ```bash
+
 rostopic echo <your_topic_name, default is /audio_frames>
+
 ```
 
 Clap or talk and check if the number are changing. 
@@ -38,7 +42,9 @@ If they do not change, you need to change, check the microphone configurations
 inside TIAGo using command: 
 
 ```bash
+
 alsamixer
+
 ```
 
 And increase the volume of the microphones of the robot in all available devices. 
@@ -80,6 +86,7 @@ audio_sub = rospy.Subscriber(<name of the audio topic, default is /audio_frames>
 You can store the received audio frames using the following code: 
 
 ```python
+
 from queue import Queue
 
 audio_buffer = Queue
@@ -91,11 +98,13 @@ def audio_callback(msg: Int16MultiArray):
     
     except Exception as e:
         rospy.logerr(f"Failed to store audio data due to: {e}")
+
 ```
 
 And you can convert stored frames into an audio file through: 
 
 ```python
+
 import wave
 import time
 
@@ -125,6 +134,7 @@ def save_audio(audio_buffer: Queue, filename: str):
     except Exception as e:
         rospy.logerr(f"Failed to save audio: {e}")
         return False
+
 ```
 
 If you want to perform an action with the audio frames directly from the buffer without needing to save them, you can modify the code below: 
@@ -149,4 +159,5 @@ def full_audio_function(audio_buffer: Queue):
     audio_as_bytes = audio.tobytes()
     # Perform some action with the full audio, such as automatic speech recognition.
     return True # Add return False somewhere when your function fails for whatever reason. 
+
 ```
