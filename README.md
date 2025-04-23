@@ -21,6 +21,7 @@ audio_sub = rospy.Subscriber(<name of the audio topic, default is /audio_frames>
 
 You can store the received audio frames using the following code: 
 
+```python
 from queue import Queue
 
 audio_buffer = Queue
@@ -32,9 +33,11 @@ def audio_callback(msg: Int16MultiArray):
     
     except Exception as e:
         rospy.logerr(f"Failed to store audio data due to: {e}")
+```
 
 And you can convert stored frames into an audio file through: 
 
+```python
 import wave
 import time
 
@@ -51,21 +54,21 @@ def save_audio(self):
     audio_bytes = audio.tobytes()
 
     # Filename with timestamp
-    filename = f"/tmp/recorded_audio_{int(time.time())}.wav" #change to fit your own needs.
+    filename = f"/tmp/recorded_audio_{int(time.time())}.wav" #change how the file is named to fit your needs.
 
     try:
         with wave.open(filename, 'wb') as wf:
             wf.setnchannels(1)  # Mono
-            wf.setsampwidth(2)  # 2 bytes for int16
+            wf.setsampwidth(2)  # 2 bytes for int16, since we are using Int16MultiArray to send data.
             wf.setframerate(<sample_rate>) #set the samplerate to your robot's samplerate
             wf.writeframes(audio_bytes) 
 
         rospy.loginfo(f"Audio saved to {filename}")
-        self.audio_buffer = Queue()  # Clear buffer after saving
+        self.audio_buffer = Queue()  # Clear buffer after saving, comment if you want to keep the buffer
         return True
 
     except Exception as e:
         rospy.logerr(f"Failed to save audio: {e}")
         return False
-
+```
 
