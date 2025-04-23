@@ -14,8 +14,8 @@ In order to be able to receive the data from this topic and convert it to actual
 you need to add the following code to your node:
 
 
-``` python  
-audio_sub = rospy.Subscriber(name of the audio topic, default is /audio_frames, Int16MultiArray, self.audio_callback) ```
+<pre>``` python  
+audio_sub = rospy.Subscriber(name of the audio topic, default is /audio_frames, Int16MultiArray, self.audio_callback) ```</pre>
 
 
 You can store the received audio frames using the following code: 
