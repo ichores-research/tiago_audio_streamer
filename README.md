@@ -3,12 +3,13 @@ The present ROS1 package implements continuous audio streaming from TIAGo's micr
 
 It sends audio frames using std_msgs.msg's Int16MultiArray, which is defined as follows: 
 
-\# Please look at the MultiArrayLayout message definition for
-\# documentation on all multiarrays.
+```
+# Please look at the MultiArrayLayout message definition for
+# documentation on all multiarrays.
 
-MultiArrayLayout  layout        \# specification of data layout
-int16[]           data          \# array of data
-
+MultiArrayLayout  layout        # specification of data layout
+int16[]           data          # array of data
+```
 
 In order to be able to receive the data from this topic and convert it to actual audio data, 
 you need to add the following code to your node:
@@ -41,7 +42,7 @@ And you can convert stored frames into an audio file through:
 import wave
 import time
 
-def save_audio(self):
+def save_audio(audio_buffer: Queue, filename: str):
     if audio_buffer.empty():
         rospy.logwarn("No audio data to save.")
         return False
@@ -52,9 +53,6 @@ def save_audio(self):
 
     # Convert to bytes
     audio_bytes = audio.tobytes()
-
-    # Filename with timestamp
-    filename = f"/tmp/recorded_audio_{int(time.time())}.wav" #change how the file is named to fit your needs.
 
     try:
         with wave.open(filename, 'wb') as wf:
@@ -72,3 +70,26 @@ def save_audio(self):
         return False
 ```
 
+If you want to perform an action with the audio frames directly from the buffer without needing to save them, you can modify the code below: 
+
+```python 
+
+def audio   _part_function(audio_buffer: Queue, sample_rate: int, frame_duration: float):
+    frame_duration # Frame duration in milliseconds, determines the duration of the audio sample you want to work on.   
+    sample_rate # Audio sample rate.
+    frame_size = int(sample_rate * frame_duration / 1000)  # Frame size in number of samples.
+    frames = list(audio_buffer.queue) # Copy the Queue contents into a list. 
+    audio = np.concatenate(frames) # Joins all the frames into one audio.
+    frames = [audio[i:i + frame_size] for i in range(0, len(audio), frame_size)] # Separates into frames of your desired duration.
+    for frame in frames:
+        if len(frame) == frame_size:
+            frame_as_bytes = frame.tobytes()
+            # Perform some action with the frame, such as voice acitivity detection.
+    return True # Add return False somewhere when your function fails for whatever reason. 
+
+def full_audio_function(audio_buffer: Queue): 
+    audio = np.concatenate(frames) # Joins all the frames into one audio.
+    audio_as_bytes = audio.tobytes()
+    # Perform some action with the full audio, such as automatic speech recognition.
+    return True # Add return False somewhere when your function fails for whatever reason. 
+```
