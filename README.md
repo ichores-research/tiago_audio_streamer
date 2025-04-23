@@ -15,7 +15,7 @@ you need to add the following code to your node:
 
 
 ```python  
-audio_sub = rospy.Subscriber(<name of the audio topic, default is /audio_frames>, Int16MultiArray, self.audio_callback) 
+audio_sub = rospy.Subscriber(<name of the audio topic, default is /audio_frames>, Int16MultiArray, audio_callback) 
 ```
 
 
@@ -42,12 +42,12 @@ import wave
 import time
 
 def save_audio(self):
-    if self.audio_buffer.empty():
+    if audio_buffer.empty():
         rospy.logwarn("No audio data to save.")
         return False
 
     # Combine all audio frames
-    frames = list(self.audio_buffer.queue)
+    frames = list(audio_buffer.queue)
     audio = np.concatenate(frames)
 
     # Convert to bytes
@@ -64,7 +64,7 @@ def save_audio(self):
             wf.writeframes(audio_bytes) 
 
         rospy.loginfo(f"Audio saved to {filename}")
-        self.audio_buffer = Queue()  # Clear buffer after saving, comment if you want to keep the buffer
+        audio_buffer = Queue()  # Clear buffer after saving, comment if you want to keep the buffer
         return True
 
     except Exception as e:
