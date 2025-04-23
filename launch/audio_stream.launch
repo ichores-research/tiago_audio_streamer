@@ -1,0 +1,8 @@
+<launch>
+    <param name='audio_samplerate' type='int' value='48000'/>
+    <param name='buffer' type='int' value='3072'/>
+    <param name='device_index' type='int' value='7'/>
+    <!-- Launch the audio_streamer node -->
+    <node name="microphone_publisher" pkg="tiago_audio_stream" type="microphone_publisher.py" output="screen"/>
+</launch>
+
