@@ -141,7 +141,7 @@ If you want to perform an action with the audio frames directly from the buffer 
 
 ```python 
 
-def audio   _part_function(audio_buffer: Queue, sample_rate: int, frame_duration: float):
+def audio_part_function(audio_buffer: Queue, sample_rate: int, frame_duration: float):
     frame_duration # Frame duration in milliseconds, determines the duration of the audio sample you want to work on.   
     sample_rate # Audio sample rate.
     frame_size = int(sample_rate * frame_duration / 1000)  # Frame size in number of samples.
