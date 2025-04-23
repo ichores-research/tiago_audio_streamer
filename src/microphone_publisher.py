@@ -10,9 +10,10 @@ rospy.init_node('audio_streamer')
 audio_hz = rospy.get_param("audio_samplerate")
 buffer_size = rospy.get_param("buffer")
 device_index = rospy.get_param("device_index")
+topic_name = rospy.get_param("audio_stream_topic")
 
 # Publisher for audio frames
-audio_pub = rospy.Publisher('/audio_frames', Int16MultiArray, queue_size=10)
+audio_pub = rospy.Publisher(topic_name, Int16MultiArray, queue_size=10)
 
 # Function to record and publish audio
 def audio_stream(device_index = 7, sample_rate=16000):

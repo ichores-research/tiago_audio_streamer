@@ -1,8 +1,16 @@
 <launch>
-    <param name='audio_samplerate' type='int' value='48000'/>
-    <param name='buffer' type='int' value='3072'/>
-    <param name='device_index' type='int' value='7'/>
-    <!-- Launch the audio_streamer node -->
-    <node name="microphone_publisher" pkg="tiago_audio_stream" type="microphone_publisher.py" output="screen"/>
-</launch>
+    <!-- Declare command-line arguments with default values -->
+    <arg name="audio_samplerate" default="48000" />
+    <arg name="buffer" default="3072" />
+    <arg name="device_index" default="7" />
+    <arg name="audio_stream_topic" default="/audio_frames" />
 
+    <!-- Set parameters using those arguments -->
+    <param name="audio_samplerate" value="$(arg audio_samplerate)" />
+    <param name="buffer" value="$(arg buffer)" />
+    <param name="device_index" value="$(arg device_index)" />
+    <param name="audio_stream_topic" value="$(arg audio_stream_topic)" />
+
+    <!-- Launch the audio_streamer node -->
+    <node name="microphone_publisher" pkg="tiago_audio_stream" type="microphone_publisher.py" output="screen" required="true"/>
+</launch>
