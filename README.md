@@ -1,5 +1,61 @@
 # tiago_audio_streamer
+
 The present ROS1 package implements continuous audio streaming from TIAGo's microphones.
+
+
+## How to install it in TIAGo? 
+
+You need to deploy it in TIAGo. You can clone the repository into your robot after installing git or copying it from your computer. The important thing is to have the code inside the /home/pal/test_ws/src folder. The code currently works for ROS Noetic, but there is not apparent reason why it should not work for ROS Melodic. Let me knoe if it fails for Melodic and I will update the code. 
+
+You should build it using:
+
+```bash
+
+catkin build tiago_audio_streamer
+
+```
+
+If no errors happened during the building process, test it with: 
+
+```bash
+
+source devel/setup.bash
+
+roslaunch tiago_audio_streamer audio_stream.launch
+
+```
+
+You need to check whether or not any audio is getting streamed. 
+In the computer connected to the robot, use the following command:
+
+```bash
+rostopic echo <your_topic_name, default is /audio_frames>
+```
+
+Clap or talk and check if the number are changing. 
+
+If they do not change, you need to change, check the microphone configurations
+inside TIAGo using command: 
+
+```bash
+alsamixer
+```
+
+And increase the volume of the microphones of the robot in all available devices. 
+Check again the if the audio frames are changing when you make sounds. If not, 
+you are probably connected to the wrong microphone/audio device and you need to 
+change the parameter in the launch file.  
+
+After everything works, you need to deploy your package. The process how to deploy
+packages is described in detail in TIAGo's documentation. 
+
+For Kraków's TIAGo, the procedure is described in: https://docs.pal-robotics.com/sdk/23.12/development/deploy-code.html
+
+
+From Prague's TIAGo++, the procedure is described in: TODO - find the documentation for older TIAGo's system. 
+
+
+## How is audio streamed? 
 
 It sends audio frames using std_msgs.msg's Int16MultiArray, which is defined as follows: 
 
@@ -11,6 +67,8 @@ MultiArrayLayout  layout        # specification of data layout
 int16[]           data          # array of data
 ```
 
+## How to use the streamed audio
+
 In order to be able to receive the data from this topic and convert it to actual audio data, 
 you need to add the following code to your node:
 
@@ -18,7 +76,6 @@ you need to add the following code to your node:
 ```python  
 audio_sub = rospy.Subscriber(<name of the audio topic, default is /audio_frames>, Int16MultiArray, audio_callback) 
 ```
-
 
 You can store the received audio frames using the following code: 
 

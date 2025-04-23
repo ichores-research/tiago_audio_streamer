@@ -12,5 +12,5 @@
     <param name="audio_stream_topic" value="$(arg audio_stream_topic)" />
 
     <!-- Launch the audio_streamer node -->
-    <node name="microphone_publisher" pkg="tiago_audio_stream" type="microphone_publisher.py" output="screen" required="true"/>
+    <node name="microphone_publisher" pkg="tiago_audio_streamer" type="microphone_publisher.py" output="screen" required="true"/>
 </launch>
