@@ -16,9 +16,9 @@ topic_name = rospy.get_param("audio_stream_topic")
 audio_pub = rospy.Publisher(topic_name, Int16MultiArray, queue_size=10)
 
 # Function to record and publish audio
-def audio_stream(device_index = 7, sample_rate=16000):
+def audio_stream(device_index=7, sample_rate=16000):
     p = pyaudio.PyAudio()
-    
+
     # Open the stream for audio capture
     stream = p.open(format=pyaudio.paInt16,
                     channels=1,
@@ -33,8 +33,8 @@ def audio_stream(device_index = 7, sample_rate=16000):
     while not rospy.is_shutdown():
         data = stream.read(buffer_size)
         audio_msg = Int16MultiArray()
-        audio_msg.data = np.frombuffer(data, dtype=np.int16).tolist()
-        audio_pub.publish(audio_msg)  # Publish audio data to topic
+        audio_msg.data = np.fromstring(data, dtype=np.int16).tolist()
+        audio_pub.publish(audio_msg)
         rospy.loginfo("Publishing audio frame...")
 
     rospy.loginfo("Recording finished.")
@@ -44,7 +44,6 @@ def audio_stream(device_index = 7, sample_rate=16000):
 
 if __name__ == '__main__':
     try:
-        # Start audio streaming
         audio_stream(device_index, audio_hz)
     except rospy.ROSInterruptException:
         pass
