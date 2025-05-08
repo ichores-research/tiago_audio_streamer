@@ -2,7 +2,7 @@
   <!-- Declare command-line arguments with default values -->
   <arg name="audio_samplerate" default="48000" />
   <arg name="buffer" default="3072" />
-  <arg name="device_index" default="7" />
+  <arg name="device_index" default="6" />
   <arg name="audio_stream_topic" default="/audio_frames" />
 
   <!-- Set parameters from arguments -->
